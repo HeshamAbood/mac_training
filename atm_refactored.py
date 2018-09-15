@@ -34,7 +34,7 @@ class ATM():
     def withdraw(self, request):
         print("Current balance is: " + str(self.user_balance))
 
-        if request>self.user_balance and request<ATM.banknotes_to_amount(ATM.__available_money_banknotes_USD):
+        if request>self.user_balance or request<ATM.banknotes_to_amount(ATM.__available_money_banknotes_USD):
             print("Can't give you all this money !!")
             return
 
