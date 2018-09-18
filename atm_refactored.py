@@ -4,11 +4,14 @@ class ATM():
     __atm_banknotes = OrderedDict(
         {"100": 0, "50": 0, "20": 0, "10": 0, "5": 0, "2": 0, "1": 0})
     __pw = "123456"
+  
 
-    def __init__(self, user_balance=0, atm_balance=OrderedDict(
+    def __init__(self, user_balance=0,bank_name="", atm_balance=OrderedDict(
         {"100": 50, "50": 50, "20": 50, "10": 50, "5": 50, "2": 50, "1": 50})):
        ATM.__atm_banknotes=atm_balance
        self.user_balance= user_balance
+       self.bank_name=bank_name
+       print("Welcome to " +str(self.bank_name))
 
     @classmethod
     def banknotes_to_amount(cls, banknotes):
@@ -27,7 +30,11 @@ class ATM():
         print("Current balance is: " + str(self.user_balance))
 
         if request>self.user_balance or request>ATM.banknotes_to_amount(ATM.__atm_banknotes):
-            print("Can't give you all this money !!")
+            print("You don't have enough money")
+            return
+
+        if request>ATM.banknotes_to_amount(ATM.__atm_banknotes):
+            print("ATM has no sufficient money")
             return
 
         request_banknotes = self.calc_banknotes(request)
@@ -53,9 +60,12 @@ class ATM():
             print("You are not authorize for this operation")
 
 #ATM().get_atm_available_money("123456")
-balance=500
-c = ATM(balance)
-c.withdraw(277)
-c.withdraw(30)
-c.withdraw(5)
-c.withdraw(500)
+balance1 = 500
+atm1 = ATM(balance1, "Smart Bank")
+atm1.withdraw(277)	
+atm1.withdraw(800)
+
+balance2 = 1000
+atm2 = ATM(balance2, "Baraka Bank")
+atm2.withdraw(100)
+atm2.withdraw(2000)
