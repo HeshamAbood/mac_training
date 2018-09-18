@@ -4,8 +4,8 @@ class ATM():
 
     def __init__(self, user_balance=0,bank_name="", atm_balance=OrderedDict(
         {"100": 50, "50": 50, "20": 50, "10": 50, "5": 50, "2": 50, "1": 50})):
-       self.atm_banknotes=atm_balance
-       self.user_balance= user_balance
+       self.__atm_banknotes=atm_balance
+       self.__user_balance= user_balance
        self.bank_name=bank_name
        print("Welcome to " +str(self.bank_name))
 
@@ -21,22 +21,22 @@ class ATM():
         return result
 
     def withdraw(self, request):
-        print("Current balance is: " + str(self.user_balance))
+        print("Current balance is: " + str(self.__user_balance))
 
-        if request>self.user_balance:
+        if request>self.__user_balance:
             print("You don't have enough money")
             return
 
-        if request>self.__banknotes_to_amount(self.atm_banknotes):
+        if request>self.__banknotes_to_amount(self.__atm_banknotes):
             print("ATM has no sufficient money")
             return
 
         request_banknotes = self.__calc_banknotes(request)
 
         for name, val in request_banknotes.items():
-            self.atm_banknotes[name] = self.atm_banknotes[name] - val
+            self.__atm_banknotes[name] = self.__atm_banknotes[name] - val
 
-        self.user_balance=self.user_balance-request
+        self.__user_balance=self.__user_balance-request
         self.__give_cash(request_banknotes)
         
     def __give_cash(self, banknotes_to_withdraw):
