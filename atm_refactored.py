@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from ATMError import ATMError
 
 class ATM():
 
@@ -22,28 +23,31 @@ class ATM():
 
     def withdraw(self, request):
         print("Current balance is: " + str(self.__user_balance))
+        try:
+            if request>self.__user_balance:
+                raise( ATMError("You don't have enough money"))
 
-        if request>self.__user_balance:
-            print("You don't have enough money")
-            return
+            if request>self.__banknotes_to_amount(self.__atm_banknotes):
+                raise (ATMError("ATM has no sufficient money"))
 
-        if request>self.__banknotes_to_amount(self.__atm_banknotes):
-            print("ATM has no sufficient money")
-            return
+            request_banknotes = self.__calc_banknotes(request)
 
-        request_banknotes = self.__calc_banknotes(request)
+            for name, val in request_banknotes.items():
+                self.__atm_banknotes[name] = self.__atm_banknotes[name] - val
 
-        for name, val in request_banknotes.items():
-            self.__atm_banknotes[name] = self.__atm_banknotes[name] - val
+            self.__user_balance=self.__user_balance-request
+            self.__give_cash(request_banknotes)
+            
+        except ATMError as e:
+            print("Operation failed",e.value)
 
-        self.__user_balance=self.__user_balance-request
-        self.__give_cash(request_banknotes)
-        
+            
     def __give_cash(self, banknotes_to_withdraw):
         user_withdraw_banknotes=[( name, val) for name,val in banknotes_to_withdraw.items() if val>0]
         for ( name, val) in user_withdraw_banknotes:
             for _ in range(val):
                 print ("Give "+ str(name))
+
 
 balance1 = 500
 atm1 = ATM(balance1, "Smart Bank")
